@@ -34,7 +34,7 @@ static void AddNumbersTogether(duckdb_function_info info, duckdb_data_chunk inpu
 	} else {
 		// no NULL values - iterate and do the operation directly
 		for (idx_t row = 0; row < input_size; row++) {
-			result_data[row] = a_data[row] + b_data[row];
+			result_data[row] = a_data[row] * b_data[row];
 		}
 	}
 }
@@ -43,7 +43,7 @@ static void AddNumbersTogether(duckdb_function_info info, duckdb_data_chunk inpu
 void RegisterAddNumbersFunction(duckdb_connection connection) {
 	// create a scalar function
 	auto function = duckdb_create_scalar_function();
-	duckdb_scalar_function_set_name(function, "add_numbers_together");
+	duckdb_scalar_function_set_name(function, "multiply_numbers_together");
 
 	// add a two bigint parameters
 	duckdb_logical_type type = duckdb_create_logical_type(DUCKDB_TYPE_BIGINT);
