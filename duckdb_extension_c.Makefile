@@ -16,6 +16,14 @@
 .PHONY: build_extension_library_debug build_extension_library_release update_duckdb_headers
 
 #############################################
+### Overrides for makefiles/duckdb_extension_c_api.Makefile
+#############################################
+
+ifeq ($(OS),Windows_NT)
+	EXTENSION_LIB_FILENAME=lib$(EXTENSION_NAME).dll
+endif
+
+#############################################
 ### Base config
 #############################################
 
