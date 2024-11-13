@@ -21,11 +21,22 @@ add_definitions(-DDUCKDB_EXTENSION_NAME=${EXTENSION_NAME})
 ###
 project(${EXTENSION_NAME} LANGUAGES C)
 
+# Create Extension library
 set(EXTENSION_SOURCES
-    src/add_numbers.c
-    src/capi_quack.c
+        src/add_numbers.c
+        src/capi_quack.c
 )
-
 add_library(${EXTENSION_NAME} SHARED ${EXTENSION_SOURCES})
+
+# Hide symbols
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_C_VISIBILITY_PRESET hidden)
+set(VISIBILITY_INLINES_HIDDEN ON)
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -s")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
+
+# Include own headers
 target_include_directories(${EXTENSION_NAME} PRIVATE src/include)
+
+# Include DuckDB C API headers
 target_include_directories(${EXTENSION_NAME} PRIVATE duckdb_capi)

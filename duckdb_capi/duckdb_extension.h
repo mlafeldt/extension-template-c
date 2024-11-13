@@ -907,6 +907,12 @@ typedef struct {
 // Place in global scope of any C/C++ file that needs to access the extension API
 #define DUCKDB_EXTENSION_EXTERN extern duckdb_ext_api_v0 duckdb_ext_api;
 
+#ifdef _WIN32
+#define ENTRYPOINT_VISIBILITY __declspec(dllexport)
+#else
+#define ENTRYPOINT_VISIBILITY __attribute__((visibility("default")))
+#endif
+
 //===--------------------------------------------------------------------===//
 // Entrypoint Macros
 //===--------------------------------------------------------------------===//
@@ -920,7 +926,7 @@ typedef struct {
 #define DUCKDB_EXTENSION_ENTRYPOINT                                                                                    \
 	DUCKDB_EXTENSION_GLOBAL static bool DUCKDB_EXTENSION_GLUE(DUCKDB_EXTENSION_NAME, _init_c_api_internal)(            \
 	    duckdb_connection connection, duckdb_extension_info info, struct duckdb_extension_access * access);            \
-	DUCKDB_EXTENSION_EXTERN_C_GUARD_OPEN DUCKDB_EXTENSION_API bool DUCKDB_EXTENSION_GLUE(                              \
+		ENTRYPOINT_VISIBILITY DUCKDB_EXTENSION_EXTERN_C_GUARD_OPEN DUCKDB_EXTENSION_API bool DUCKDB_EXTENSION_GLUE(    \
 	    DUCKDB_EXTENSION_NAME, _init_c_api)(duckdb_extension_info info, struct duckdb_extension_access * access) {     \
 		DUCKDB_EXTENSION_API_INIT(info, access, DUCKDB_EXTENSION_API_VERSION_STRING);                                  \
 		duckdb_database *db = access->get_database(info);                                                              \
