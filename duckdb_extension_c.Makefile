@@ -47,7 +47,7 @@ ifeq ($(GEN),ninja)
 endif
 
 #############################################
-### Rust Build targets
+### Windows weirdness
 #############################################
 
 ifeq ($(OS),Windows_NT)
@@ -58,18 +58,32 @@ else
 	OUTPUT_LIB_PATH_RELEASE=cmake_build/release/$(EXTENSION_LIB_FILENAME)
 endif
 
+ifeq ($(DUCKDB_PLATFORM),windows_amd64_rtools)
+	MINGW=1
+endif
+ifeq ($(DUCKDB_PLATFORM),windows_amd64_mingw)
+	MINGW=1
+endif
+ifeq ($(MINGW),1)
+	EXTRA_COPY_STEP_DEBUG=$(PYTHON_VENV_BIN) -c "import shutil;shutil.copyfile('cmake_build/debug/Debug/lib$(EXTENSION_LIB_FILENAME)', '$(OUTPUT_LIB_PATH_DEBUG)')"
+	EXTRA_COPY_STEP_RELEASE=$(PYTHON_VENV_BIN) -c "import shutil;shutil.copyfile('cmake_build/release/Release/lib$(EXTENSION_LIB_FILENAME)', '$(OUTPUT_LIB_PATH_RELEASE)')"
+endif
+
+#############################################
+### Build targets
+#############################################
+
 build_extension_library_debug: check_configure
 	cmake $(CMAKE_BUILD_FLAGS) -DCMAKE_BUILD_TYPE=Debug -S $(PROJ_DIR) -B cmake_build/debug
 	cmake --build cmake_build/debug --config Debug
+	$(EXTRA_COPY_STEP_DEBUG)
 	$(PYTHON_VENV_BIN) -c "from pathlib import Path;Path('./build/debug/extension/$(EXTENSION_NAME)').mkdir(parents=True, exist_ok=True)"
 	$(PYTHON_VENV_BIN) -c "import shutil;shutil.copyfile('$(OUTPUT_LIB_PATH_DEBUG)', 'build/debug/$(EXTENSION_LIB_FILENAME)')"
 
 build_extension_library_release: check_configure
 	cmake $(CMAKE_BUILD_FLAGS) -DCMAKE_BUILD_TYPE=Release -S $(PROJ_DIR) -B cmake_build/release
 	cmake --build cmake_build/release --config Release
-	ls cmake_build
-	ls cmake_build/release
-	ls cmake_build/release/Release
+	$(EXTRA_COPY_STEP_RELEASE)
 	$(PYTHON_VENV_BIN) -c "from pathlib import Path;Path('./build/release/extension/$(EXTENSION_NAME)').mkdir(parents=True, exist_ok=True)"
 	$(PYTHON_VENV_BIN) -c "import shutil;shutil.copyfile('$(OUTPUT_LIB_PATH_RELEASE)', 'build/release/$(EXTENSION_LIB_FILENAME)')"
 
