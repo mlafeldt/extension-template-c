@@ -12,7 +12,6 @@
 #	VCPKG_TARGET_TRIPLET         : vcpkg triplet to override
 #	GEN                          : allow specifying ninja as generator
 
-
 .PHONY: build_extension_library_debug build_extension_library_release update_duckdb_headers
 
 #############################################
@@ -65,8 +64,8 @@ ifeq ($(DUCKDB_PLATFORM),windows_amd64_mingw)
 	MINGW=1
 endif
 ifeq ($(MINGW),1)
-	EXTRA_COPY_STEP_DEBUG=$(PYTHON_VENV_BIN) -c "import shutil;shutil.copyfile('cmake_build/debug/Debug/lib$(EXTENSION_LIB_FILENAME)', '$(OUTPUT_LIB_PATH_DEBUG)')"
-	EXTRA_COPY_STEP_RELEASE=$(PYTHON_VENV_BIN) -c "import shutil;shutil.copyfile('cmake_build/release/Release/lib$(EXTENSION_LIB_FILENAME)', '$(OUTPUT_LIB_PATH_RELEASE)')"
+	EXTRA_COPY_STEP_DEBUG=$(PYTHON_VENV_BIN) -c "import shutil;shutil.copyfile('cmake_build/debug/lib$(EXTENSION_LIB_FILENAME)', '$(OUTPUT_LIB_PATH_DEBUG)')"
+	EXTRA_COPY_STEP_RELEASE=$(PYTHON_VENV_BIN) -c "import shutil;shutil.copyfile('cmake_build/release/lib$(EXTENSION_LIB_FILENAME)', '$(OUTPUT_LIB_PATH_RELEASE)')"
 endif
 
 #############################################
