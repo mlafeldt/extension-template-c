@@ -8,17 +8,43 @@
 #	MINIMUM_DUCKDB_VERSION_MINOR : minor version
 #	MINIMUM_DUCKDB_VERSION_PATCH : patch version
 #	CMAKE_EXTRA_BUILD_FLAGS      : additional CMake flags to pass
+#	VCPKG_TOOLCHAIN_PATH         : path to vcpkg toolchain
+#	VCPKG_TARGET_TRIPLET         : vcpkg triplet to override
+#	GEN                          : allow specifying ninja as generator
 
 
 .PHONY: build_extension_library_debug build_extension_library_release update_duckdb_headers
 
+#############################################
+### Base config
+#############################################
+
 # Create build params to pass name and version
 CMAKE_VERSION_PARAMS = -DEXTENSION_NAME=$(EXTENSION_NAME)
-CMAKE_VERSION_PARAMS += -DMINIMUM_DUCKDB_VERSION=$(MINIMUM_DUCKDB_VERSION_MAJOR)
+CMAKE_VERSION_PARAMS += -DMINIMUM_DUCKDB_VERSION_MAJOR=$(MINIMUM_DUCKDB_VERSION_MAJOR)
 CMAKE_VERSION_PARAMS += -DMINIMUM_DUCKDB_VERSION_MINOR=$(MINIMUM_DUCKDB_VERSION_MINOR)
 CMAKE_VERSION_PARAMS += -DMINIMUM_DUCKDB_VERSION_PATCH=$(MINIMUM_DUCKDB_VERSION_PATCH)
 
 CMAKE_BUILD_FLAGS = $(CMAKE_VERSION_PARAMS) $(CMAKE_EXTRA_BUILD_FLAGS)
+
+#############################################
+### Vcpkg
+#############################################
+
+ifneq ("${VCPKG_TOOLCHAIN_PATH}", "")
+	CMAKE_BUILD_FLAGS += -DCMAKE_TOOLCHAIN_FILE='${VCPKG_TOOLCHAIN_PATH}'
+endif
+ifneq ("${VCPKG_TARGET_TRIPLET}", "")
+	CMAKE_BUILD_FLAGS += -DVCPKG_TARGET_TRIPLET='${VCPKG_TARGET_TRIPLET}'
+endif
+
+#############################################
+### Ninja
+#############################################
+
+ifeq ($(GEN),ninja)
+	CMAKE_BUILD_FLAGS += -G "Ninja"
+endif
 
 #############################################
 ### Rust Build targets

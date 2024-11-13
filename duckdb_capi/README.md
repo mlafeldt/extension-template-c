@@ -1,6 +1,6 @@
 # DuckDB C API Headers
-This directory contains the C API headers of DuckDB. These headers should be of the same 
-DuckDB version as is specified in `Makefile`. Note that these headers can be updated automatically 
+This directory contains the C API headers of DuckDB. These headers should generally match the `MINIMUM_DUCKDB_VERSION` 
+that is specified in the `Makefile`. Note that these headers can be updated automatically 
 to match the `MINIMUM_DUCKDB_VERSION` makefile variable by running (assuming the default makefile setup):
 
 ```shell

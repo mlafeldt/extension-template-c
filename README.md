@@ -1,6 +1,6 @@
 # DuckDB C/C++ extension template
-This is an **experimental** template for C or C++ based extensions based on the C Extension API of DuckDB. Note that this
-is a different template from 
+This is an **experimental** template for C/C++ based extensions that link with the **C Extension API** of DuckDB. Note that this
+is different from https://github.com/duckdb/extension-template, which links against the C++ API of DuckDB.
 
 Features:
 - No DuckDB build required
@@ -23,6 +23,7 @@ tooling to make life a little easier and to be able to share CI/CD infrastructur
 - [Make](https://www.gnu.org/software/make)
 - CMake
 - Git
+- (Optional) Ninja + ccache
 
 Installing these dependencies will vary per platform:
 - For Linux, these come generally pre-installed or are available through the distro-specific package manager.
@@ -46,6 +47,14 @@ a script is run to transform the shared library into a loadable extension by app
 to the `build/debug` directory.
 
 To create optimized release binaries, simply run `make release` instead.
+
+### Faster builds
+We recommend to install Ninja and Ccache for building as this can have a significant speed boost during development. After installing, ninja can be used 
+by running:
+```shell
+make clean
+GEN=ninja make debug
+```
 
 ## Testing
 This extension uses the DuckDB Python client for testing. This should be automatically installed in the `make configure` step.
