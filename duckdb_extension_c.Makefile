@@ -70,7 +70,6 @@ build_extension_library_release: check_configure
 	ls cmake_build
 	ls cmake_build/release
 	ls cmake_build/release/Release
-	$(PYTHON_VENV_BIN) -c "import shutil;shutil.copyfile('cmake_build/release/Release/lib$(EXTENSION_NAME).dll', 'build/release/$(EXTENSION_LIB_FILENAME)')"
 	$(PYTHON_VENV_BIN) -c "from pathlib import Path;Path('./build/release/extension/$(EXTENSION_NAME)').mkdir(parents=True, exist_ok=True)"
 	$(PYTHON_VENV_BIN) -c "import shutil;shutil.copyfile('$(OUTPUT_LIB_PATH_RELEASE)', 'build/release/$(EXTENSION_LIB_FILENAME)')"
 
