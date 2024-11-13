@@ -50,17 +50,25 @@ endif
 ### Rust Build targets
 #############################################
 
+ifeq ($(OS),Windows_NT)
+	OUTPUT_LIB_PATH_DEBUG=cmake_build/debug/Debug/$(EXTENSION_LIB_FILENAME)
+	OUTPUT_LIB_PATH_RELEASE=cmake_build/release/Release/$(EXTENSION_LIB_FILENAME)
+else
+	OUTPUT_LIB_PATH_DEBUG=cmake_build/debug/$(EXTENSION_LIB_FILENAME)
+	OUTPUT_LIB_PATH_RELEASE=cmake_build/release/$(EXTENSION_LIB_FILENAME)
+endif
+
 build_extension_library_debug: check_configure
 	cmake $(CMAKE_BUILD_FLAGS) -DCMAKE_BUILD_TYPE=Debug -S $(PROJ_DIR) -B cmake_build/debug
 	cmake --build cmake_build/debug --config Debug
 	$(PYTHON_VENV_BIN) -c "from pathlib import Path;Path('./build/debug/extension/$(EXTENSION_NAME)').mkdir(parents=True, exist_ok=True)"
-	$(PYTHON_VENV_BIN) -c "import shutil;shutil.copyfile('cmake_build/debug/$(EXTENSION_LIB_FILENAME)', 'build/debug/$(EXTENSION_LIB_FILENAME)')"
+	$(PYTHON_VENV_BIN) -c "import shutil;shutil.copyfile('$(OUTPUT_LIB_PATH_DEBUG)', 'build/debug/$(EXTENSION_LIB_FILENAME)')"
 
 build_extension_library_release: check_configure
 	cmake $(CMAKE_BUILD_FLAGS) -DCMAKE_BUILD_TYPE=Release -S $(PROJ_DIR) -B cmake_build/release
 	cmake --build cmake_build/release --config Release
 	$(PYTHON_VENV_BIN) -c "from pathlib import Path;Path('./build/release/extension/$(EXTENSION_NAME)').mkdir(parents=True, exist_ok=True)"
-	$(PYTHON_VENV_BIN) -c "import shutil;shutil.copyfile('cmake_build/release/$(EXTENSION_LIB_FILENAME)', 'build/release/$(EXTENSION_LIB_FILENAME)')"
+	$(PYTHON_VENV_BIN) -c "import shutil;shutil.copyfile('$(OUTPUT_LIB_PATH_RELEASE)', 'build/release/$(EXTENSION_LIB_FILENAME)')"
 
 #############################################
 ### Misc

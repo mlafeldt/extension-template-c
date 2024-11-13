@@ -12,16 +12,16 @@ static void AddNumbersTogether(duckdb_function_info info, duckdb_data_chunk inpu
 	duckdb_vector a = duckdb_data_chunk_get_vector(input, 0);
 	duckdb_vector b = duckdb_data_chunk_get_vector(input, 1);
 	// get the data pointers for the input vectors (both int64 as specified by the parameter types)
-	auto a_data = (int64_t *)duckdb_vector_get_data(a);
-	auto b_data = (int64_t *)duckdb_vector_get_data(b);
-	auto result_data = (int64_t *)duckdb_vector_get_data(output);
+	int64_t* a_data = (int64_t *)duckdb_vector_get_data(a);
+	int64_t*  b_data = (int64_t *)duckdb_vector_get_data(b);
+	int64_t*  result_data = (int64_t *)duckdb_vector_get_data(output);
 	// get the validity vectors
-	auto a_validity = duckdb_vector_get_validity(a);
-	auto b_validity = duckdb_vector_get_validity(b);
+	uint64_t* a_validity = duckdb_vector_get_validity(a);
+	uint64_t* b_validity = duckdb_vector_get_validity(b);
 	if (a_validity || b_validity) {
 		// if either a_validity or b_validity is defined there might be NULL values
 		duckdb_vector_ensure_validity_writable(output);
-		auto result_validity = duckdb_vector_get_validity(output);
+		uint64_t* result_validity = duckdb_vector_get_validity(output);
 		for (idx_t row = 0; row < input_size; row++) {
 			if (duckdb_validity_row_is_valid(a_validity, row) && duckdb_validity_row_is_valid(b_validity, row)) {
 				// not null - do the addition
@@ -42,7 +42,7 @@ static void AddNumbersTogether(duckdb_function_info info, duckdb_data_chunk inpu
 // Register the AddNumbersFunction
 void RegisterAddNumbersFunction(duckdb_connection connection) {
 	// create a scalar function
-	auto function = duckdb_create_scalar_function();
+	duckdb_scalar_function function = duckdb_create_scalar_function();
 	duckdb_scalar_function_set_name(function, "multiply_numbers_together");
 
 	// add a two bigint parameters

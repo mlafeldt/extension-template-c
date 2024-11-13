@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
 
-set(CMAKE_CXX_STANDARD "11" CACHE STRING "C++ standard to enforce")
-
 ###
 # Configuration
 ###
@@ -21,11 +19,11 @@ add_definitions(-DDUCKDB_EXTENSION_NAME=${EXTENSION_NAME})
 ###
 # Build
 ###
-project(${EXTENSION_NAME})
+project(${EXTENSION_NAME} LANGUAGES C)
 
 set(EXTENSION_SOURCES
-    src/add_numbers.cpp
-    src/capi_quack.cpp
+    src/add_numbers.c
+    src/capi_quack.c
 )
 
 add_library(${EXTENSION_NAME} SHARED ${EXTENSION_SOURCES})
