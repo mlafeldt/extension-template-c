@@ -9,7 +9,7 @@ MINIMUM_DUCKDB_VERSION_MINOR=0
 MINIMUM_DUCKDB_VERSION_PATCH=1
 MINIMUM_DUCKDB_VERSION=v$(MINIMUM_DUCKDB_VERSION_MAJOR).$(MINIMUM_DUCKDB_VERSION_MINOR).$(MINIMUM_DUCKDB_VERSION_PATCH)
 
-all: configure debug
+all: configure release
 
 # Include makefiles from DuckDB
 include extension-ci-tools/makefiles/duckdb_extension_c_api.Makefile
