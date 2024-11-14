@@ -13,7 +13,7 @@ all: configure release
 
 # Include makefiles from DuckDB
 include extension-ci-tools/makefiles/duckdb_extension_c_api.Makefile
-include ./duckdb_extension_c.Makefile
+include extension-ci-tools/makefiles/duckdb_extension_c.Makefile
 
 configure: venv platform extension_version
 
