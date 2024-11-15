@@ -27,7 +27,12 @@ set(EXTENSION_SOURCES
         src/add_numbers.c
         src/capi_quack.c
 )
-add_library(${EXTENSION_NAME} SHARED ${EXTENSION_SOURCES})
+
+if (DUCKDB_WASM_EXTENSION)
+	add_library(${EXTENSION_NAME} STATIC ${EXTENSION_SOURCES})
+else()
+	add_library(${EXTENSION_NAME} SHARED ${EXTENSION_SOURCES})
+endif()
 
 # Hide symbols
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
