@@ -12,8 +12,8 @@ MINIMUM_DUCKDB_VERSION=v$(MINIMUM_DUCKDB_VERSION_MAJOR).$(MINIMUM_DUCKDB_VERSION
 all: configure release
 
 # Include makefiles from DuckDB
-include extension-ci-tools/makefiles/duckdb_extension_c_api.Makefile
-include extension-ci-tools/makefiles/duckdb_extension_c.Makefile
+include extension-ci-tools/makefiles/c_api_extensions/base.Makefile
+include extension-ci-tools/makefiles/c_api_extensions/c_cpp.Makefile
 
 configure: venv platform extension_version
 
