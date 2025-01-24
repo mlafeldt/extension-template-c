@@ -13,6 +13,7 @@ concurrency:
 
 jobs:
   duckdb-stable-build:
+    if: false
     name: Build extension binaries
     uses: duckdb/extension-ci-tools/.github/workflows/_extension_distribution.yml@main
     with:
@@ -20,4 +21,12 @@ jobs:
       ci_tools_version: main
       extension_name: capi_quack
       extra_toolchains: python3
-      exclude_archs: 'wasm_mvp;wasm_eh;wasm_threads'
+
+  duckdb-latest-build:
+    name: Build extension binaries
+    uses: duckdb/extension-ci-tools/.github/workflows/_extension_distribution.yml@main
+    with:
+      duckdb_version: main
+      ci_tools_version: main
+      extension_name: capi_quack
+      extra_toolchains: python3

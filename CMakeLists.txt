@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
+option(DUCKDB_WASM_EXTENSIONS "Whether compiling for Wasm target" OFF)
 
 ###
 # Configuration
@@ -32,7 +33,12 @@ set(EXTENSION_SOURCES
         src/add_numbers.c
         src/capi_quack.c
 )
-add_library(${EXTENSION_NAME} SHARED ${EXTENSION_SOURCES})
+
+if (DUCKDB_WASM_EXTENSION)
+	add_library(${EXTENSION_NAME} STATIC ${EXTENSION_SOURCES})
+else()
+	add_library(${EXTENSION_NAME} SHARED ${EXTENSION_SOURCES})
+endif()
 
 # Hide symbols
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)

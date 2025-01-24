@@ -28,4 +28,5 @@ test: test_debug
 test_debug: test_extension_debug
 test_release: test_extension_release
 
-clean: clean_build clean_cmake clean_configure
+clean: clean_build clean_cmake
+clean_all: clean clean_configure
