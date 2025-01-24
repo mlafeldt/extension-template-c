@@ -19,7 +19,7 @@ all: configure release
 include extension-ci-tools/makefiles/c_api_extensions/base.Makefile
 include extension-ci-tools/makefiles/c_api_extensions/c_cpp.Makefile
 
-configure: venv platform extension_version parse_duckdb_version
+configure: venv platform extension_version
 
 debug: build_extension_library_debug build_extension_with_metadata_debug
 release: build_extension_library_release build_extension_with_metadata_release
