@@ -70,7 +70,7 @@ or for the *release* build:
 make test_release
 ```
 
-### Version switching 
+### Version switching
 Testing with different DuckDB versions is really simple:
 
 First, run 
@@ -90,3 +90,12 @@ Finally, build and test with
 make debug
 make test_debug
 ```
+
+### Using unstable Extension C API functionality
+The DuckDB Extension C API has a stable part and an unstable part. By default, this template only allows usage of the stable
+part of the API. To switch it to allow using the unstable part, take the following steps:
+
+Firstly, set your `TARGET_DUCKDB_VERSION` to your desired in `./Makefile`. Then, run `make update_duckdb_headers` to ensure 
+the headers in `./duckdb_capi` are set to the correct version. (FIXME: this is not yet working properly). 
+
+Finally, set `USE_UNSTABLE_C_API` to 1 in `./Makefile`. That's all!
